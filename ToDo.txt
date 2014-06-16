@@ -1,0 +1,11 @@
+Ex1 : 
+* All the JQuery code is in Lib\Ex1.js
+* Make the input field and the "+" button on the same line (it must fill the line regardless of the size)
+* When I press enter or when I click on the "+" button, a new item is add at the bottom of the listview
+
+Ex2 :
+* Have the listView refresh automaticaly after the database query to populate it in order to see the filter part of the listview
+
+Ex3 :
+* Correct the addDemande button to insert a row in the table
+* Verify that a click on the addDemande button clear the input field

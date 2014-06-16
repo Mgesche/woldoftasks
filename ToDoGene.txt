@@ -1,0 +1,5 @@
+Page 1 : saisie demandes avec input + Add
+Page 2 : Classification
+Page 3 : Changement de statut, avec barre de progression pour Analyse / Developpement / Tests / Livraison
+Page 4 : Graphes
+Envoi de mail avec l'avancement

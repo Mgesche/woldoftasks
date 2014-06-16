@@ -1,0 +1,233 @@
+<html lang="fr">
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="src\lib\css\jquery.mobile-1.4.2.min.css" />
+		<script src="src\lib\js\jquery-2.1.0.min.js"></script>
+		<script src="db\DB_F_Demande.js"></script>
+		<script src="db\DB_D_Phase_Projet.js"></script>
+		<script src="db\DB_D_Techno.js"></script>
+		<script src="db\DB_D_Action.js"></script>
+		<script src="js\SuiviTaches.js"></script>
+		<script src="src\lib\js\jquery.mobile-1.4.2.min.js"></script>
+	</head>
+	<body>
+		<INPUT id="idCurrentDemande" VALUE="0" style="display:none;"/>
+		<div data-role="page" id="PageDemande">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid" class="ui-btn-active">Demandes</a></li>
+						<li><a href="#PageClassificationPhase" data-icon="star">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<table width=100%>
+					<tr>
+						<td>
+							<table width=100%>
+								<tr>
+									<td width=90%><input type="text" name="newDemande" id="newDemande" value="" /></td>
+									<td width=10%></td>
+								</tr>
+							</table>
+						</td>
+						<td><a onClick="addDemande($('#newDemande').val());" id="addDemande" data-role="button" data-icon="plus" data-iconpos="notext">Delete</a></td>
+					</tr>
+				</table>
+				<div data-role="fieldcontain" id="ListDemande">
+				</div>
+				<ul data-role="listview" data-inset="true" id="listToDoDemande">
+					<li><s><i><font color="green">Créer une nouvelle demande</font></i></s></li>
+					<li><font color="red">Supprimer une demande</font></li>
+					<li>Actualiser les demandes en fonction de l'avancement (pour la mettre en traitée)</li>
+					<li>Ajouter une description a la demande</li>
+					<li>Ajouter un chiffrage a la demande une fois classifiée et chiffrée</li>
+					<li>Mettre un recapitulatif des demandes avec le nb de jours et le prix total</li>
+					<li><s><i><font color="green">Mettre sur la meme ligne le plus et la saisie</font></i></s></li>
+					<li>Corriger les evenements du plus ou du bouton enter</li>
+					<li><s><i><font color="green">Rafraichir automatiquement le listview une fois une tache insérée</font></i></s></li>
+					<li><s><i><font color="green">Vider la plage de saisie quand on ajoute</font></i></s></li>
+					<li><s><i><font color="green">Ne créer une demande que si la saisie n'est pas vide</font></i></s></li>
+					<li><s><i><font color="green">Décaler le bouton pour mettre un peu d'espace</font></i></s></li>
+					<li>Classification de la listView par projet</li>
+				</ul>
+			</div>
+		</div>
+		<div data-role="page" id="PageClassificationPhase">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationPhase" data-icon="star" class="ui-btn-active">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<div data-role="fieldcontain" id="ListDemandeClassificationPhase">
+				</div>
+				<form id="ListPhaseProjet">
+				</form>
+				<table width=100%>
+					<tr>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-l ui-btn-icon-left ui-disabled">Précedent</button></td>
+						<td width=12.5%></td>
+						<td width=25%></td>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-r ui-btn-icon-left" onClick="goToPage('PageClassificationTechno');">Suivant</button></td>
+						<td width=12.5%></td>
+					</tr>
+				</table>
+				<ul data-role="listview" data-inset="true" id="listToDoDemande">
+					<li><s><i><font color="green">Demande au milieu non classifiée phase projet au milieu</font></i></s></li>
+					<li><s><i><font color="green">Checkbox des phases projets avec les images, classé via cycle en V</font></i></s></li>
+					<li><s><i><font color="green">Fleches en bas a droite pour passer a la suite (et on change page)</font></i></s></li>
+					<li><s><i><font color="green">Demande au milieu non classifiée technos au milieu</font></i></s></li>
+					<li>Checkbox des technos avec les images, classées par probabilité</li>
+					<li><s><i><font color="green">Fleches en bas a gauche et a droite pour passer a la suite ou pour reculer (et on change page)</font></i></s></li>
+					<li>Demande au milieu</li>
+					<li>Liste filtrées des actions realisable, qu'on drag/drop sur la demande</li>
+					<li>En bas, un recapitulatif de la ToDo avec des checkbox, un chiffrage et un coup total</li>
+					<li>Un bouton valider</li>
+				</ul>
+			</div>
+		</div>
+		<div data-role="page" id="PageClassificationTechno">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationTechno" data-icon="star" class="ui-btn-active">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<div data-role="fieldcontain" id="ListDemandeClassificationTechno">
+				</div>
+				<form id="ListTechno">
+				</form>
+				<table width=100%>
+					<tr>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-l ui-btn-icon-left" onClick="goToPage('PageClassificationPhase');">Précedent</button></td>
+						<td width=12.5%></td>
+						<td width=25%></td>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-r ui-btn-icon-left" onClick="goToPage('PageClassificationAction');">Suivant</button></td>
+						<td width=12.5%></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div data-role="page" id="PageClassificationAction">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationAction" data-icon="star" class="ui-btn-active">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<div data-role="fieldcontain" id="ListDemandeClassificationAction">
+				</div>
+				<input type="text" name="nomAction" id="nomAction" value="" />
+				<div data-role="fieldcontain" id="ListDemandeAction">
+				</div>
+				<!--<ul data-role="listview" data-filter="true" data-filter-placeholder="Demande..." data-inset="true" id="listDemande">
+					<li><a href="#popupLogin">Créer un cube</a></li>
+					<li><a href="#PageProgression">Ajouter les GHM Recours</a></li>
+					<li><a href="javascript:alert('tt');">Mise en production</a></li>
+				</ul>-->
+				<table width=100%>
+					<tr>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-l ui-btn-icon-left" onClick="goToPage('PageClassificationTechno');">Précedent</button></td>
+						<td width=12.5%></td>
+						<td width=25%><button class="ui-btn ui-icon-check ui-btn-icon-left">OK</button></td>
+						<td width=12.5%></td>
+						<td width=12.5%><button class="ui-btn ui-icon-carat-r ui-btn-icon-left ui-disabled">Suivant</button></td>
+						<td width=12.5%></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div data-role="page" id="PageProgression">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationPhase" data-icon="star">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star" class="ui-btn-active">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<ul data-role="listview" data-inset="true" id="listToDoDemande">
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<div data-role="page" id="PageTdB">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationPhase" data-icon="star">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star" class="ui-btn-active">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<ul data-role="listview" data-inset="true" id="listToDoDemande">
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<div data-role="page" id="PageParam">
+			<div data-role="header" data-theme="f">
+				<h1>Suivi des taches</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#PageDemande" data-icon="grid">Demandes</a></li>
+						<li><a href="#PageClassificationPhase" data-icon="star">Classification</a></li>
+						<li><a href="#PageProgression" data-icon="star">Progression</a></li>
+						<li><a href="#PageTdB" data-icon="star">Tableau de bord</a></li>
+						<li><a href="#PageParam" data-icon="star" class="ui-btn-active">Parametres</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<ul data-role="listview" data-inset="true" id="listToDoDemande">
+					<li>Ajouter competences</li>
+					<li>Ajouter scenario</li>
+					<li>Raids avec grosse epreuves</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+

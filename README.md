@@ -6,3 +6,5 @@ It's primary goals are :
 * Make the time estimation of tasks easier
 * Supply templates of tasks to help the user to know how to handle tasks
 * Gamify the whole process to make task cleaning a game instead of a chore
+
+Feel free to test it and report bugs or contribute
