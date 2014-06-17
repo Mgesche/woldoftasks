@@ -44,6 +44,65 @@ function SQL_RefreshListDemandes(){
 	});
 }
 
+/* Show the first item without complete classification */
+function SQL_RefreshListDemandesClassification(){
+	db.transaction(function(transaction){
+		var sql =   "SELECT id, title "
+		sql = sql + "FROM F_demande DEM "
+		sql = sql + "LEFT JOIN R_Demande_Phase_Projet PHA ON PHA.ID_Demande = DEM.id "
+		sql = sql + "LEFT JOIN R_Demande_techno TEC ON TEC.ID_Demande = DEM.id "
+		sql = sql + "LEFT JOIN R_Demande_action ACT ON ACT.ID_Demande = DEM.id "
+		sql = sql + "WHERE DEM.dt_meta_del IS NULL AND (PHA.ID_Demande IS NULL OR TEC.ID_Demande IS NULL OR ACT.ID_Demande IS NULL) ORDER BY DEM.dt_meta_cre LIMIT 1;";
+		transaction.executeSql (sql, undefined, 
+		function (transaction, result){
+			var htmlPhase = "<ul data-role=\"listview\" data-inset=\"true\" id=\"ulListDemandeClassificationPhase\">";
+			var htmlTechno = "<ul data-role=\"listview\" data-inset=\"true\" id=\"ulListDemandeClassificationTechno\">";
+			var htmlAction = "<ul data-role=\"listview\" data-inset=\"true\" id=\"ulListDemandeClassificationAction\">";
+			if (result.rows.length){
+				for (var i = 0; i < result.rows.length; i++){
+					var row = result.rows.item (i);
+					var title = row.title;
+					var id = row.id;
+					var htmlAdd = "<li><a href=\"#\">" + title + "</a></li>";
+					htmlPhase += htmlAdd;
+					htmlTechno += htmlAdd;
+					htmlAction += htmlAdd;
+				}
+				idCurrentDemande = id;
+				setCurrentDemande(idCurrentDemande);
+			}
+			else {}
+
+			htmlPhase += "</ul>";
+			htmlTechno += "</ul>";
+			htmlAction += "</ul>";
+		
+			var $content = $("#ListDemandeClassificationPhase");
+			$content.html(htmlPhase);
+			var $ul = $content.find("ul");
+			$ul.listview();
+			
+			$content = $("#ListDemandeClassificationTechno");
+			$content.html(htmlTechno);
+			$ul = $content.find("ul");
+			$ul.listview();
+			
+			$content = $("#ListDemandeClassificationAction");
+			$content.html(htmlAction);
+			$ul = $content.find("ul");
+			$ul.listview();
+			
+		});
+	}, function(){
+		//--- error handling
+	}, function(){
+		//--- success handling
+		SQL_RefreshListPhaseProjet();
+		SQL_RefreshListTechno();
+		SQL_RefreshListAction();
+	});
+}
+
 /* Show the first item without project phase */
 function SQL_RefreshListDemandesClassificationPhase(){
 	db.transaction(function(transaction){

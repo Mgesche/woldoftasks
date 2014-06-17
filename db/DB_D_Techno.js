@@ -40,7 +40,7 @@ function SQL_RefreshListTechno(){
 					var row = result.rows.item (i);
 					var title = row.title;
 					var id = row.id;
-					html += "<input type=\"checkbox\" name=\"chb"+title.replace(" ", "")+"\" id=\"chbTechno"+id+"\" onClick=\"SQL_UpdateTechno("+idCurrentDemande+", "+id+");\">";
+					html += "<input type=\"checkbox\" name=\"chb"+title.replace(" ", "")+"\" id=\"chbTechno"+id+"\" onClick=\"SQL_UpdateTechno("+idCurrentDemande+", "+id+");SQL_RefreshListAction();\">";
 					html += "<label for=\"chbTechno"+id+"\">"+title+"</label>";
 			}
 		  }

@@ -7,22 +7,24 @@ $('document').ready(new function() {
 	lancement("Document ready {");
 
 	db = initDB();
+	
+	setCurrentDemande(0);
 
 	SQL_RefreshListDemandes();
 //	SQL_RefreshListDemandesClassificationPhase();
 //	SQL_RefreshListDemandesClassificationTechno();
 //	SQL_RefreshListDemandesClassificationAction();
 	
-	SQL_ClearPhaseProjet();
-	SQL_SamplePhaseProjet();
+	//SQL_ClearPhaseProjet();
+	//SQL_SamplePhaseProjet();
 	SQL_RefreshListPhaseProjet();
 	
-	SQL_ClearTechno();
-	SQL_SampleTechno();
+	//SQL_ClearTechno();
+	//SQL_SampleTechno();
 	SQL_RefreshListTechno();
 	
-	SQL_ClearAction();
-	SQL_SampleAction();
+	//SQL_ClearAction();
+	//SQL_SampleAction();
 	SQL_RefreshListAction();
 	
 	cloture("}");
@@ -36,19 +38,30 @@ $('document').ready(new function() {
 
 });
 
+$(document).on("pagebeforeshow", "#PageDemande", function() {
+	console.log("#PageDemande:pagebeforeshow")
+	endClassification();
+});
+
 $(document).on("pagebeforeshow", "#PageClassificationPhase", function() {
-	SQL_RefreshListDemandesClassificationPhase();
-	//SQL_RefreshListPhaseProjet();
+	console.log("#PageClassificationPhase:pagebeforeshow")
+	if(isClassificationInProgress() == "1") {
+	} else {
+		beginClassification();
+		SQL_RefreshListDemandesClassification();
+	}
 });
 
 $(document).on("pagebeforeshow", "#PageClassificationTechno", function() {
-	SQL_RefreshListDemandesClassificationTechno();
-	SQL_RefreshListTechno();
+	console.log("#PageClassificationTechno:pagebeforeshow")
+	//SQL_RefreshListDemandesClassificationTechno();
+	//SQL_RefreshListTechno();
 });
 
 $(document).on("pagebeforeshow", "#PageClassificationAction", function() {
-	SQL_RefreshListDemandesClassificationAction();
-	SQL_RefreshListAction();
+	console.log("#PageClassificationAction:pagebeforeshow")
+	//SQL_RefreshListDemandesClassificationAction();
+	//SQL_RefreshListAction();
 });
 
 function goToPage(page) {
@@ -62,10 +75,10 @@ function initDB(){
 	/* Création de la DB */
 	var db = openDatabase ("SuiviTache", "1.0", "Test", 65535);
 	/* Creation of the table */
-	db.transaction(function(transaction){
+//	db.transaction(function(transaction){
 	
 		/* F_Demande */
-		var sql =	"CREATE TABLE IF NOT EXISTS F_demande (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS F_demande (" +
 						"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						"title VARCHAR(100) NOT NULL,"+
 						"description VARCHAR(500) NULL,"+
@@ -73,10 +86,10 @@ function initDB(){
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* D_Phase_Projet */
-		var sql =	"CREATE TABLE IF NOT EXISTS D_Phase_Projet (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS D_Phase_Projet (" +
 						"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						"title VARCHAR(100) NOT NULL,"+
 						"description VARCHAR(500) NULL,"+
@@ -84,10 +97,10 @@ function initDB(){
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* D_Techno */
-		var sql =	"CREATE TABLE IF NOT EXISTS D_Techno (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS D_Techno (" +
 						"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						"title VARCHAR(100) NOT NULL,"+
 						"description VARCHAR(500) NULL,"+
@@ -95,10 +108,10 @@ function initDB(){
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* D_Action */
-		var sql =	"CREATE TABLE IF NOT EXISTS D_Action (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS D_Action (" +
 						"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						"title VARCHAR(100) NOT NULL,"+
 						"description VARCHAR(500) NULL,"+
@@ -108,39 +121,39 @@ function initDB(){
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* R_Demande_Phase_Projet */
-		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Phase_Projet (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Phase_Projet (" +
 						"id_Demande INTEGER," +
 						"id_Phase_Projet INTEGER," +
 						"dt_meta_cre integer,"+
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* R_Demande_Techno */
-		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Techno (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Techno (" +
 						"id_Demande INTEGER," +
 						"id_Techno INTEGER," +
 						"dt_meta_cre integer,"+
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
 		/* R_Demande_Action */
-		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Action (" +
+/*		var sql =	"CREATE TABLE IF NOT EXISTS R_Demande_Action (" +
 						"id_Demande INTEGER," +
 						"id_Action INTEGER," +
 						"dt_meta_cre integer,"+
 						"dt_meta_maj integer,"+
 						"dt_meta_del integer"+
 					")";
-		transaction.executeSql(sql);
+		transaction.executeSql(sql);*/
 		
-	});
+//	});
 	
 	cloture("}");
 
@@ -192,7 +205,7 @@ function executeSQL(db, sql){
 					console.log(result.rows)
 					for (var i = 0; i < result.rows.length; i++) {
 						var row = result.rows.item(i);
-						console.log(row.Name)
+						console.log(row.Name);
 					}
 				}
 			}, errorHandler);
@@ -200,11 +213,32 @@ function executeSQL(db, sql){
 }
 
 function getCurrentDemande() {
+	console.log("getCurrentDemande()");
 	//alert("Get : "+$("#idCurrentDemande").val());
-	return $("#idCurrentDemande").val();
+	var idCurrentVariable = localStorage.getItem("idCurrentDemande");
+	//return $("#idCurrentDemande").val();
+	return idCurrentVariable;
 }
 
 function setCurrentDemande(idCurrentVariable) {
+	console.log("setCurrentDemande("+idCurrentVariable+")");
 	$("#idCurrentDemande").val(idCurrentVariable);
+	localStorage.setItem("idCurrentDemande",idCurrentVariable)
 	//alert("SET : "+idCurrentVariable);
+}
+
+function beginClassification() {
+	console.log("beginClassification()");
+	localStorage.setItem("classificationInProgress","1");
+}
+
+function endClassification() {
+	console.log("endClassification()");
+	localStorage.setItem("classificationInProgress","0");
+}
+
+function isClassificationInProgress() {
+	var classificationInProgress = localStorage.getItem("classificationInProgress");
+	console.log("isClassificationInProgress : "+classificationInProgress);
+	return classificationInProgress;
 }

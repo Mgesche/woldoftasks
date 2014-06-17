@@ -41,7 +41,7 @@ function SQL_RefreshListPhaseProjet(){
 					var row = result.rows.item (i);
 					var title = row.title;
 					var id    = row.id;
-					html += "<input type=\"checkbox\" name=\"chb"+title.replace(" ", "")+"\" id=\"chbPhase"+id+"\" onClick=\"SQL_UpdatePhaseProjet("+idCurrentDemande+", "+id+");\">";
+					html += "<input type=\"checkbox\" name=\"chb"+title.replace(" ", "")+"\" id=\"chbPhase"+id+"\" onClick=\"SQL_UpdatePhaseProjet("+idCurrentDemande+", "+id+");SQL_RefreshListAction();\">";
 					html += "<label for=\"chbPhase"+id+"\">"+title+"</label>";
 			}
 		  }

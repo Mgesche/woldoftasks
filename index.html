@@ -42,10 +42,7 @@
 				<div data-role="fieldcontain" id="ListDemande">
 				</div>
 				<ul data-role="listview" data-inset="true" id="listToDoDemande">
-					<li><s><i><font color="green">Créer une nouvelle demande</font></i></s></li>
-					<li><font color="red">Supprimer une demande</font></li>
 					<li>Actualiser les demandes en fonction de l'avancement (pour la mettre en traitée)</li>
-					<li>Ajouter une description a la demande</li>
 					<li>Ajouter un chiffrage a la demande une fois classifiée et chiffrée</li>
 					<li>Mettre un recapitulatif des demandes avec le nb de jours et le prix total</li>
 					<li><s><i><font color="green">Mettre sur la meme ligne le plus et la saisie</font></i></s></li>
@@ -148,10 +145,12 @@
 			<div data-role="content">
 				<div data-role="fieldcontain" id="ListDemandeClassificationAction">
 				</div>
-				<input type="text" name="nomAction" id="nomAction" value="" />
+				<form id="ListAction">
+				</form>
+				<!--<input type="text" name="nomAction" id="nomAction" value="" />
 				<div data-role="fieldcontain" id="ListDemandeAction">
 				</div>
-				<!--<ul data-role="listview" data-filter="true" data-filter-placeholder="Demande..." data-inset="true" id="listDemande">
+				<ul data-role="listview" data-filter="true" data-filter-placeholder="Demande..." data-inset="true" id="listDemande">
 					<li><a href="#popupLogin">Créer un cube</a></li>
 					<li><a href="#PageProgression">Ajouter les GHM Recours</a></li>
 					<li><a href="javascript:alert('tt');">Mise en production</a></li>
@@ -161,7 +160,7 @@
 						<td width=12.5%></td>
 						<td width=12.5%><button class="ui-btn ui-icon-carat-l ui-btn-icon-left" onClick="goToPage('PageClassificationTechno');">Précedent</button></td>
 						<td width=12.5%></td>
-						<td width=25%><button class="ui-btn ui-icon-check ui-btn-icon-left">OK</button></td>
+						<td width=25%><button class="ui-btn ui-icon-check ui-btn-icon-left" onClick="goToPage('PageClassificationPhase');endClassification();">OK</button></td>
 						<td width=12.5%></td>
 						<td width=12.5%><button class="ui-btn ui-icon-carat-r ui-btn-icon-left ui-disabled">Suivant</button></td>
 						<td width=12.5%></td>
